@@ -30,5 +30,16 @@
             </li>
         </ul>
     </li>
+
+     <li class="menu-item active ">
+        <a href="{{ url('admin/manage-article') }}" class=" menu-link">
+            <span class="menu-label">
+                <span class="menu-name">Manage Article</span>
+
+            </span>
+        </a>
+    </li>
+
+
 </ul>
  

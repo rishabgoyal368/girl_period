@@ -25,3 +25,4 @@ Route::post('/logout','ApiController@logout');
 Route::post('/get-profile','ApiController@profile'); 
 Route::post('/update-profile','ApiController@updateProfile'); 
 
+Route::post('/get-articles','Api\ContentController@get_article');

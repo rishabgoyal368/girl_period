@@ -37,29 +37,15 @@ Route::group(['prefix'=>'admin','middleware'=>'CheckAdminAuth'],function()
 
     Route::match(['get','post'],'/reset-password','AuthController@reset_password');
     Route::match(['get','post'],'/my-profile','AuthController@my_profile');
+
+    //===================== Manage Articles ==============================================
     
-    //=====================App- Setting=============================================
-    Route::match(['get','post'],'/app-setting','Admin\AppSettingController@index');
-    Route::match(['get','post'],'/app-setting/add','Admin\AppSettingController@add');
-    Route::match(['get','post'],'/app-setting/edit/{id}','Admin\AppSettingController@edit');
-    Route::match(['get','post'],'/app-setting/change-type','Admin\AppSettingController@change_type');
-    Route::any('/app-setting/delete/{id}','Admin\AppSettingController@delete');
-    //=====================App- Setting=============================================
+    Route::any('/manage-article','Admin\ManageArticleController@index');
+    Route::any('/manage-article/add','Admin\ManageArticleController@add');
+    Route::any('/manage-article/edit/{id}','Admin\ManageArticleController@add');
+    Route::any('/manage-article/delete/{id}','Admin\ManageArticleController@delete');
 
-
-
-    //=====================MCQ ==============================================
-    Route::any('/mcq','Admin\McqController@index');
-    Route::any('/mcq/add','Admin\McqController@add_question');
-    Route::any('/mcq/edit/{id}','Admin\McqController@edit_question');
-    Route::any('/mcq/delete/{id}','Admin\McqController@delete');
-    //=====================MCQ ==============================================
-   
-
-    //=================Report Management =============================
-    Route::match(['get','post'],'/report-list','Admin\ReportController@index'); 
-    Route::match(['get','post'],'/report-list/details','Admin\ReportController@details'); 
-    //=================Report Management =============================
+    //===================== Manage Articles ==============================================
 
 
 
