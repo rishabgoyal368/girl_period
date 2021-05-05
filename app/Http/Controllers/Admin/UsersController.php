@@ -41,8 +41,8 @@ class UsersController extends Controller
             } else if ($request->isMethod('POST')) {
                 $data = $request->all();
                 $validator =  Validator::make($data, [
-                    'first_name' =>  'required',
-                    'last_name'=> 'required',
+                    'name' =>  'required',
+                    'user_name'=> 'required',
                     'email' => 'required|email',
                     'mobile_number' => 'required|numeric',
                     'status' => 'required',

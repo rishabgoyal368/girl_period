@@ -20,14 +20,15 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        // 'name', 'email', 'password',
-        'first_name',
-        'last_name',
+        'name',
+        'user_name',
         'email',
         'mobile_number',
         'profile_image',
         'password',
         'status',
+        'is_pregnency',
+        'pregnency_date',
     ];
 
     /**
@@ -53,8 +54,8 @@ class User extends Authenticatable implements JWTSubject
         return User::updateOrCreate(
             ['id' => @$data['id']],
             [
-                'first_name' => @$data['first_name'],
-                'last_name' => @$data['last_name'],
+                'name' => @$data['name'],
+                'user_name' => @$data['user_name'],
                 'email' => @$data['email'],
                 // 'email_verified_at' => @$data['email_verified_at'],
                 'mobile_number' => @$data['mobile_number'],

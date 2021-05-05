@@ -22,8 +22,8 @@ class ApiController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'first_name' => 'required',
-                'last_name' => 'required',
+                'name' => 'required',
+                'user_name' => 'required',
                 'email'         => 'required|email',
                 'password'     => 'required',
                 'mobile_number' => 'required|numeric'
@@ -41,14 +41,14 @@ class ApiController extends Controller
         }
 
 
-        $user                     = new User();
-        $user->first_name         = $data['first_name'];
-        $user->last_name         = $data['last_name'];
-        $user->email              = $data['email'];
-        $user->mobile_number     = $data['mobile_number'];
-        $hash_password          = Hash::make($data['password']);
-        $user->password         = str_replace("$2y$", "$2a$", $hash_password);
-        $user->status             = 'Active';
+        $user                       = new User();
+        $user->name                 = $data['name'];
+        $user->user_name            = $data['user_name'];
+        $user->email                = $data['email'];
+        $user->mobile_number        = $data['mobile_number'];
+        $hash_password              = Hash::make($data['password']);
+        $user->password             = str_replace("$2y$", "$2a$", $hash_password);
+        $user->status               = 'Active';
         if ($user->save()) {
             return response()->json(['success' => true, 'data' => $user], Response::HTTP_OK);
         } else {
@@ -178,8 +178,8 @@ class ApiController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'first_name' => 'required',
-                'last_name' => 'required',
+                'name' => 'required',
+                'user_name' => 'required',
                 'mobile_number' => 'required|numeric'
             ]
         );
@@ -190,8 +190,8 @@ class ApiController extends Controller
 
         $user_id = Auth::User()->id;
         $update_profile =  User::where('id',$user_id)->first();
-        $update_profile->first_name         = $data['first_name'];
-        $update_profile->last_name         = $data['last_name'];
+        $update_profile->name               = $data['name'];
+        $update_profile->user_name          = $data['user_name'];
         $update_profile->mobile_number      = $data['mobile_number'];
         if ($update_profile->save()) {
             return response()->json(['success' => true, 'data' => 'User Profile Updated Successfully.'], Response::HTTP_OK);
