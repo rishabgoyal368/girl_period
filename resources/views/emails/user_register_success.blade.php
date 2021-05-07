@@ -1,4 +1,4 @@
-1<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
     <meta http-equiv="content-type" content="text/html; charset=windows-1252">
@@ -25,7 +25,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <h4 style="text-align:center; margin-bottom:0;color: #525252;"> Hello, {{ ucfirst($name)}} </h4>
+                                                        <h4 style="text-align:center; margin-bottom:0;color: #525252;"> Hello User your email and password Details are :- , </h4>
                                                         <p style="letter-spacing:1px;line-height:30px;text-align:center; margin-bottom:30px; padding:10px; padding-left:20px;">
                                                           Email: {{ $email }}<br>
                                                           Password : {{ $password }}

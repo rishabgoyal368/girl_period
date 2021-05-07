@@ -67,6 +67,49 @@ class ApiController extends Controller
         }
     }
 
+    public function check_login(Request $request){
+        $data = $request->all();
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'email'      => 'required|email'
+            ]
+
+        );
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 200);
+        }
+        $check_email_exists = User::where('email',$request->email)->first();
+        if(!empty($check_email_exists)){
+            $response['code'] = 200;
+            $response['message'] = "User Already Registered";
+        }else{
+            
+            $user                       = new User();
+            $user->email                = $data['email'];
+            $user_password              = rand(11111111,99999999);
+            $hash_password              = Hash::make($user_password);
+            $user->password             = str_replace("$2y$", "$2a$", $hash_password);
+            $user->status               = 'Active';
+            $user->save();
+            $email                      = $data['email'];
+            $project_name               = env('App_name');
+            try {
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+                    Mail::send('emails.user_register_success', ['email' => $user->email,'password' => $user_password], function ($message) use ($email, $project_name) {
+                        $message->to($email, $project_name)->subject('User successfully registered');
+                    });
+                }
+            } catch (Exception $e) {
+            }
+            $response['success']    = 'true';
+            $response['code']       = 200;
+            $response['message']    = 'User Registered Successfully';
+            $response['data']       = $user;
+        }
+        return $response;
+    }
+
     public function user_login(Request $request)
     {
         $credentials = $request->only('email', 'password');

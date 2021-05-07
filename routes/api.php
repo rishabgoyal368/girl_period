@@ -16,7 +16,10 @@ use App\Http\Controllers\ApiController;
 
 
 
+Route::post('/check-login', 'ApiController@check_login');
+
 Route::post('/register', 'ApiController@user_registration');
+
 Route::post('/login', 'ApiController@user_login');
 Route::post('/forgot-password','ApiController@forgot_password');
 Route::post('/reset-password','ApiController@reset_password');
