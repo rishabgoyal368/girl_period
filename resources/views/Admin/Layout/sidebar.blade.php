@@ -31,7 +31,7 @@
         </ul>
     </li>
 
-     <li class="menu-item active ">
+     <li class="menu-item">
         <a href="{{ url('admin/manage-article') }}" class=" menu-link">
             <span class="menu-label">
                 <span class="menu-name">Manage Article</span>

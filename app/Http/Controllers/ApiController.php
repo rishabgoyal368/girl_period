@@ -25,7 +25,7 @@ class ApiController extends Controller
                 'name' => 'required',
                 'user_name' => 'required',
                 'email'         => 'required|email',
-                'password'     => 'required',
+                // 'password'     => 'required',
                 'mobile_number' => 'required|numeric'
             ]
         );
@@ -46,10 +46,21 @@ class ApiController extends Controller
         $user->user_name            = $data['user_name'];
         $user->email                = $data['email'];
         $user->mobile_number        = $data['mobile_number'];
-        $hash_password              = Hash::make($data['password']);
+        $user_password              = rand(11111111,99999999);
+        $hash_password              = Hash::make($user_password);
         $user->password             = str_replace("$2y$", "$2a$", $hash_password);
         $user->status               = 'Active';
         if ($user->save()) {
+            $email                      = $data['email'];
+            $project_name               = env('App_name');
+            try {
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+                    Mail::send('emails.user_register_success', ['name' => $user->user_name,'email' => $user->email,'password' => $user_password], function ($message) use ($email, $project_name) {
+                        $message->to($email, $project_name)->subject('User successfully registered');
+                    });
+                }
+            } catch (Exception $e) {
+            }
             return response()->json(['success' => true, 'data' => $user], Response::HTTP_OK);
         } else {
             return response()->json(['error' => false, 'data' => 'Something went wrong, Please try again later.']);
@@ -180,7 +191,9 @@ class ApiController extends Controller
             [
                 'name' => 'required',
                 'user_name' => 'required',
-                'mobile_number' => 'required|numeric'
+                'mobile_number' => 'required|numeric',
+                'is_pregnency' => 'required',
+                'pregnency_date' => 'date'
             ]
         );
 
@@ -193,6 +206,10 @@ class ApiController extends Controller
         $update_profile->name               = $data['name'];
         $update_profile->user_name          = $data['user_name'];
         $update_profile->mobile_number      = $data['mobile_number'];
+        $update_profile->is_pregnency       = $data['is_pregnency'];
+        if(!empty($data['pregnency_date'])){
+            $update_profile->pregnency_date     = $data['pregnency_date'];
+        }
         if ($update_profile->save()) {
             return response()->json(['success' => true, 'data' => 'User Profile Updated Successfully.'], Response::HTTP_OK);
         }else{
