@@ -42,7 +42,7 @@ Route::group(['prefix'=>'admin','middleware'=>'CheckAdminAuth'],function()
     
     Route::any('/manage-article','Admin\ManageArticleController@index');
     Route::any('/manage-article/add','Admin\ManageArticleController@add');
-    Route::any('/manage-article/edit/{id}','Admin\ManageArticleController@add');
+    Route::any('/manage-article/edit/{id}','Admin\ManageArticleController@edit');
     Route::any('/manage-article/delete/{id}','Admin\ManageArticleController@delete');
 
     //===================== Manage Articles ==============================================
@@ -50,4 +50,15 @@ Route::group(['prefix'=>'admin','middleware'=>'CheckAdminAuth'],function()
 
 
 });
+
 define('CommonError','Something went erong, Please try again later.');
+
+define('DefaultImgPath',asset('/assets/img/default.png'));
+
+define('AdminProfileBasePath','uploads/Admin');
+define('AdminProfileImgPath',asset('uploads/Admin'));
+
+define('ArticleBasePath','uploads/articles');
+define('ArticleImgPath',asset('uploads/articles'));
+
+

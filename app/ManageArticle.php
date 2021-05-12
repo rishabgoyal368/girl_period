@@ -8,18 +8,7 @@ class ManageArticle extends Model
 {
     protected $fillable = [
         'title',
+        'image',
         'description',
     ];
-
-
-    public static function addEdit($data)
-    {
-        return ManageArticle::updateOrCreate(
-            ['id' => @$data['id']],
-            [
-                'title' => @$data['title'],
-                'description' => @$data['description']
-            ]
-        );
-    }
 }
