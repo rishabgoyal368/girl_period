@@ -67,12 +67,14 @@ class ApiController extends Controller
         }
     }
 
-    public function check_login(Request $request){
+    public function user_login(Request $request){
         $data = $request->all();
+        $credentials = $request->only('email', 'password');
         $validator = Validator::make(
             $request->all(),
             [
-                'email'      => 'required|email'
+                'email'      => 'required|email',
+                'password'  =>  'required'
             ]
 
         );
@@ -81,8 +83,15 @@ class ApiController extends Controller
         }
         $check_email_exists = User::where('email',$request->email)->first();
         if(!empty($check_email_exists)){
-            $response['code'] = 200;
-            $response['message'] = "User Already Registered";
+            $token = auth()->attempt($credentials);
+            if ($token) {
+                return $this->respondWithToken($token);
+            } else {
+                $response = ["message" => 'Invalid Details'];
+                return response($response, 422);
+            }
+            
+            
         }else{
             
             $user                       = new User();
@@ -93,45 +102,48 @@ class ApiController extends Controller
             $user->status               = 'Active';
             $user->save();
             $email                      = $data['email'];
-            $project_name               = env('App_name');
-            try {
-                if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
-                    Mail::send('emails.user_register_success', ['email' => $user->email,'password' => $user_password], function ($message) use ($email, $project_name) {
-                        $message->to($email, $project_name)->subject('User successfully registered');
-                    });
-                }
-            } catch (Exception $e) {
-            }
-            $response['success']    = 'true';
-            $response['code']       = 200;
-            $response['message']    = 'User Registered Successfully';
-            $response['data']       = $user;
+            // $project_name               = env('App_name');
+            // try {
+            //     if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+            //         Mail::send('emails.user_register_success', ['email' => $user->email,'password' => $user_password], function ($message) use ($email, $project_name) {
+            //             $message->to($email, $project_name)->subject('User successfully registered');
+            //         });
+            //     }
+            // } catch (Exception $e) {
+            // }
+            $user_details               = [];
+            $user_details['email']      = $email; 
+            $user_details['password']   = $user_password; 
+            $response['success']        = 'true';
+            $response['code']           = 200;
+            $response['message']        = 'User Registered Successfully';
+            $response['data']           = $user_details;
         }
         return $response;
     }
 
-    public function user_login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'email'      => 'required|email',
-                'password'   => 'required'
-            ]
-        );
+    // public function user_login(Request $request)
+    // {
+    //     $credentials = $request->only('email', 'password');
+    //     $validator = Validator::make(
+    //         $request->all(),
+    //         [
+    //             'email'      => 'required|email',
+    //             'password'   => 'required'
+    //         ]
+    //     );
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 200);
-        }
-        $token = auth()->attempt($credentials);
-        if ($token ) {
-            return $this->respondWithToken($token);
-        } else {
-            $response = ["message" => 'Invalid Details'];
-            return response($response, 422);
-        }
-    }
+    //     if ($validator->fails()) {
+    //         return response()->json(['error' => $validator->errors()], 200);
+    //     }
+    //     $token = auth()->attempt($credentials);
+    //     if ($token ) {
+    //         return $this->respondWithToken($token);
+    //     } else {
+    //         $response = ["message" => 'Invalid Details'];
+    //         return response($response, 422);
+    //     }
+    // }
 
     public function forgot_password(Request $request)
     {
@@ -284,8 +296,11 @@ class ApiController extends Controller
 
     public function respondWithToken($token)
     {
+        $user_details = Auth::User();
+        // print_r($user);die();
         return response()->json([
             'access_token' => $token,
+            'data' => $user_details,
             'token_type' => 'bearer',
             'code' => 200,
             'expire_in' => auth()->factory()->getTTL() * 60

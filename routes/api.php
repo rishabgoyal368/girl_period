@@ -16,7 +16,7 @@ use App\Http\Controllers\ApiController;
 
 
 
-Route::post('/check-login', 'ApiController@check_login');
+// Route::post('/check-login', 'ApiController@check_login');
 
 Route::post('/register', 'ApiController@user_registration');
 
