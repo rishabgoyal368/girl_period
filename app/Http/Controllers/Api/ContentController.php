@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\ManageArticle;
+use App\PrivacyPolicy;
 
 
 class ContentController extends Controller
@@ -31,6 +32,18 @@ class ContentController extends Controller
         }
     }
 
+    public function PrivacyPolicy()
+    {
+        try{
+            $PrivacyPolicy              = PrivacyPolicy::where('id',1)->first();
+            $response['code']           = 200;
+            $response['status']         = 'success';
+            $response['data']           = $PrivacyPolicy;
+            return response()->json($response);
+        } catch (\Tymon\JWTAuth\Exceptions\UserNotDefinedException $e) {
+            return response()->json(['message' => 'Something went wrong, Please try again later.', 'code' => 400]);
+        }
+    }
 
 
 }

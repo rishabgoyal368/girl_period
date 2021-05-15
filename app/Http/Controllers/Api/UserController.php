@@ -11,7 +11,7 @@ use SymfonyComponentHttpFoundationResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
-use App\UserNote;
+use App\UserNote, App\User;
 use Auth;
 
 
@@ -49,6 +49,36 @@ class UserController extends Controller
             return response()->json(['message' => 'Something went wrong, Please try again later.', 'code' => 400]);
         }
     }
+
+    public function user_profile(Request $request)
+    {
+        $data = $request->all();
+
+        try{
+            $user = auth()->userOrFail();
+            $profile_update                      = User::find($user['id']);
+            $check_email_exists = User::where('id','<>',$profile_update['id'])->where('email', $data['email'])->get()->toArray();
+
+            if (!empty($check_email_exists)) {
+                return response()->json(['error' => 'This Email is already exists.'], 200);
+            }
+
+            $profile_update->email       = $data['email']  ? $data['email'] : null;
+            $profile_update->province    = $data['province']  ? $data['province'] : null;
+            $profile_update->password    = $data['pin']  ? $data['pin'] : null;
+            $profile_update->age_range   = $data['age_range']  ? $data['age_range'] : null;
+            $profile_update->save();
+          
+            $response['code']       = 200;
+            $response['status']     = 'User Profile Updated successfully';
+            $response['data']       =  $user;
+            return response()->json($response);
+        } catch (\Tymon\JWTAuth\Exceptions\UserNotDefinedException $e) {
+            return response()->json(['message' => 'Something went wrong, Please try again later.', 'code' => 400]);
+        }
+    }
+
+
 
 
 

@@ -46,7 +46,7 @@ class ApiController extends Controller
         $user->user_name            = $data['user_name'];
         $user->email                = $data['email'];
         $user->mobile_number        = $data['mobile_number'];
-        $user_password              = rand(11111111,99999999);
+        $user_password              = rand(1111,9999);
         $hash_password              = Hash::make($user_password);
         $user->password             = str_replace("$2y$", "$2a$", $hash_password);
         $user->status               = 'Active';
@@ -96,7 +96,7 @@ class ApiController extends Controller
             
             $user                       = new User();
             $user->email                = $data['email'];
-            $user_password              = rand(11111111,99999999);
+            $user_password              = rand(1111,9999);
             $hash_password              = Hash::make($user_password);
             $user->password             = str_replace("$2y$", "$2a$", $hash_password);
             $user->status               = 'Active';
