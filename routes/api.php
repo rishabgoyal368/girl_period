@@ -32,5 +32,6 @@ Route::post('/get-articles','Api\ContentController@get_article');
 
 Route::post('/add-user-notes','Api\UserController@add_user_notes');
 Route::post('/user-profile','Api\UserController@user_profile');
+Route::post('/setting','Api\UserController@setting');
 
 Route::post('/privacy-policy','Api\ContentController@PrivacyPolicy');

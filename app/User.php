@@ -29,6 +29,8 @@ class User extends Authenticatable implements JWTSubject
         'status',
         'is_pregnency',
         'pregnency_date',
+        'period_length',
+        'menstural_period'
     ];
 
     /**

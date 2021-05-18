@@ -48,6 +48,7 @@ class ApiController extends Controller
         $user->mobile_number        = $data['mobile_number'];
         $user_password              = rand(1111,9999);
         $hash_password              = Hash::make($user_password);
+        $user->is_pregnency         = 'no';
         $user->password             = str_replace("$2y$", "$2a$", $hash_password);
         $user->status               = 'Active';
         if ($user->save()) {
@@ -99,6 +100,7 @@ class ApiController extends Controller
             $user_password              = rand(1111,9999);
             $hash_password              = Hash::make($user_password);
             $user->password             = str_replace("$2y$", "$2a$", $hash_password);
+            $user->is_pregnency         = 'no';
             $user->status               = 'Active';
             $user->save();
             $email                      = $data['email'];
@@ -111,9 +113,12 @@ class ApiController extends Controller
             //     }
             // } catch (Exception $e) {
             // }
+            $user_token = [];
+            $user_token = auth()->attempt(array('email' => $email, 'password' => $user_password));
             $user_details               = [];
             $user_details['email']      = $email; 
             $user_details['password']   = $user_password; 
+            $response['token']          = $user_token;
             $response['success']        = 'true';
             $response['code']           = 200;
             $response['message']        = 'User Registered Successfully';
