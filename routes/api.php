@@ -34,4 +34,9 @@ Route::post('/add-user-notes','Api\UserController@add_user_notes');
 Route::post('/user-profile','Api\UserController@user_profile');
 Route::post('/setting','Api\UserController@setting');
 
+
+Route::post('/setting/update','Api\UserController@setting_update');
+Route::post('/add-period-date','Api\UserController@add_period_date');
+Route::post('/get-next-period-date','Api\UserController@get_next_period_date');
+
 Route::post('/privacy-policy','Api\ContentController@PrivacyPolicy');
