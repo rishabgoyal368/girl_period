@@ -28,8 +28,8 @@ class ManageArticleController extends Controller
             $add_article->description   = $data['description'];
             if(!empty($data['image'])){
                 $fileName = time() . '.' . $request->image->extension();
-                $request->image->move(public_path('uploads\articles'), $fileName);
                 $base_url = url('uploads/articles');
+                $request->image->move(public_path('uploads/articles'), $fileName);
                 $add_article->image = $base_url.'/'.$fileName;
             }
             if($add_article->save()){

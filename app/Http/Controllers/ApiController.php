@@ -85,6 +85,7 @@ class ApiController extends Controller
         if(!empty($check_email_exists)){
             $token = auth()->attempt($credentials);
             if ($token) {
+                // print_r($token);die();
                 return $this->respondWithToken($token);
             } else {
                 $response = ["message" => 'Invalid Details'];
@@ -102,6 +103,7 @@ class ApiController extends Controller
             $user->status               = 'Active';
             $user->save();
             $email                      = $data['email'];
+            
             // $project_name               = env('App_name');
             // try {
             //     if (!filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
@@ -111,9 +113,13 @@ class ApiController extends Controller
             //     }
             // } catch (Exception $e) {
             // }
+            // $new_credentials = []
+            $user_token = [];
+            $user_token = auth()->attempt(array('email' => $email, 'password' => $user_password));
             $user_details               = [];
             $user_details['email']      = $email; 
             $user_details['password']   = $user_password; 
+            $response['token']          = $user_token;
             $response['success']        = 'true';
             $response['code']           = 200;
             $response['message']        = 'User Registered Successfully';
