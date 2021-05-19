@@ -79,6 +79,23 @@ class UserController extends Controller
     }
 
 
+    public function setting(){
+    
+        try{
+            $user = auth()->userOrFail();
+            $user_setting_details    = User::find($user['id']);
+            // print_r($user_setting_details);die();
+            $data = $user_setting_details->only('is_pregnency', 'period_length', 'menstural_period');
+            $response['code']       = 200;
+            $response['status']     = 'success';
+            $response['data']       =  $data;
+            return response()->json($response);
+        } catch (\Tymon\JWTAuth\Exceptions\UserNotDefinedException $e) {
+            return response()->json(['message' => 'Something went wrong, Please try again later.', 'code' => 400]);
+        }  
+    }
+
+
 
 
 
